@@ -1,7 +1,7 @@
 from datetime import datetime
 from dataclasses import dataclass
 from enum import Enum
-import json
+import json, socket
 from json.decoder import JSONDecodeError
 import ssl
 from typing import Literal, TypeAlias
@@ -34,7 +34,8 @@ class Weather:
 def get_weather(coordinates: Coordinates) -> Weather:
     """Requests weather in OpenWeather API and returns it"""
     openweather_response = _get_openweather_response(
-        longitude=coordinates.longitude, latitude=coordinates.latitude)
+        longitude=coordinates.longitude, 
+        latitude=coordinates.latitude)
     weather = _parse_openweather_response(openweather_response)
     return weather
 
@@ -68,6 +69,7 @@ def _parse_weather_type(openweather_dict: dict) -> WeatherType:
         weather_type_id = str(openweather_dict["weather"][0]["id"])
     except (IndexError, KeyError):
         raise ApiServiceError
+    
     weather_types = {
         "1": WeatherType.THUNDERSTORM,
         "3": WeatherType.DRIZZLE,
@@ -90,5 +92,7 @@ def _parse_sun_time(
 def _parse_city(openweather_dict: dict) -> str:
     return openweather_dict["name"]
 
+
 if __name__ == "__main__":
     print(get_weather(Coordinates(latitude=55.7, longitude=37.6)))
+

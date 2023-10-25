@@ -1,5 +1,5 @@
-USE_ROUNDED_COORDS = False
-OPENWEATHER_API = "7549b3ff11a7b2f3cd25b56d21c83c6a"
+USE_ROUNDED_COORDS = True
+OPENWEATHER_API = "7d97302422b2c1b2a0bb6cb8327a064d"
 OPENWEATHER_URL = (
     "https://api.openweathermap.org/data/2.5/weather?"
     "lat={latitude}&lon={longitude}&"
