@@ -6,11 +6,14 @@ from typing import Protocol, TypedDict
 from weather_api_service import Weather
 from weather_formatter import format_weather
 
+
 class WeatherStorage(Protocol):
     """Interface for any storage saving weather"""
     def save(self, weather: Weather) -> None:
         raise NotImplementedError
 
+
+# save to history.txt
 class PlainFileWeatherStorage:
     """Store weather in plain text file"""
     def __init__(self, file: Path):
@@ -22,12 +25,7 @@ class PlainFileWeatherStorage:
         with open(self._file, "a", encoding='utf-8') as f:
             f.write(f"{now}\n{formatted_weather}\n")
 
-def save_weather(weather: Weather, storage: WeatherStorage) -> None:
-    """Saves weather in the storage"""
-    storage.save(weather)
-
-
-
+# save to history.json
 class HistoryRecord(TypedDict):
     date: str
     weather: str
@@ -57,3 +55,9 @@ class JSONFileWeatherStorage:
     def _write(self, history: list[HistoryRecord]) -> None:
         with open(self._jsonfile, "w", encoding='utf-8') as f:
             json.dump(history, f, ensure_ascii=False, indent=4)
+
+
+
+def save_weather(weather: Weather, storage: WeatherStorage) -> None:
+    """Saves weather in the storage"""
+    storage.save(weather)
